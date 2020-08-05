@@ -126,8 +126,6 @@ public class Game implements ActionListener {
 		
 		frame.setVisible(true);
 	}
-
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -153,13 +151,21 @@ public class Game implements ActionListener {
 		
 		boolean win = false;
 		
+		top.setEntry(playerEntry, true);
+		top.setEntry(enemyEntry, false);
+		
 		switch (type) {
 		case STRONG:
 			win = true;
 			break;
 		case NEUTRAL:
-			//	player gets slight advantage (if they are equal, then the player wins)
-			if (playerEntry.power >= enemyEntry.power) {
+			if(playerEntry.power == enemyEntry.power) {
+				top.midText.setText("=");
+				top.topText.setText("Tie  ");
+				top.topText.setForeground(new Color(150, 150, 75));
+				return;
+			}
+			else if (playerEntry.power > enemyEntry.power) {
 				win = true;
 			} else {
 				win = false;
@@ -176,19 +182,17 @@ public class Game implements ActionListener {
 			enemy.size--;
 			remove(enemy.entries, enemyIndex);
 			top.midText.setText(">");
-			top.topText.setText("You Win");
+			top.topText.setText("You Win  ");
 			top.topText.setForeground(new Color(0, 100, 0));
 		} else {
 			player.size--;
 			remove(player.entries, playerIndex);
 			top.midText.setText("<");
-			top.topText.setText("You Lose");
+			top.topText.setText("You Lose  ");
 			top.topText.setForeground(Color.RED);
 		}
 
-		top.setEntry(playerEntry, true);
-		top.setEntry(enemyEntry, false);
-		frame.setVisible(true);
+		
 		
 		top.pSt.setText(Integer.toString(player.size) + " [you]");
 		top.eSt.setText(Integer.toString(enemy.size));
