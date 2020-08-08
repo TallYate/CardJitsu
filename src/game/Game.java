@@ -69,8 +69,6 @@ public class Game implements ActionListener {
 	public static void main(String[] args) throws InterruptedException {
 		new Game();
 	}
-	
-	boolean test = false;
 
 	public void loadCards() {
 		cards.removeAll();
@@ -131,7 +129,6 @@ public class Game implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("credit")){
 			try {
-				System.out.println("credit");
 				new CreditMenu();
 			} catch (IOException e1) {
 				e1.printStackTrace();

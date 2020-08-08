@@ -1,4 +1,4 @@
 This program is made by Joshua (TallYate)
 Textures from icons8.com
-Based off a command line game by Warren,
+Based off a command line game by Warren (TryingToBeHooman),
 which is based off of Club Penguin

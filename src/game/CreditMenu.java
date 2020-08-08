@@ -1,38 +1,41 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 public class CreditMenu {
 	private JFrame frame = new JFrame("Credit");
 
 	CreditMenu() throws IOException {
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(100, 100, 360, 150);
-
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setBounds(100, 100, 400, 120);
+		frame.setResizable(false);
 		Container container = frame.getContentPane();
 		container.setLayout(new FlowLayout());
-
 		
-		
-		File file = new File("src\\game\\credit.txt");
-		BufferedReader br = new BufferedReader(new FileReader(file));
-
+		InputStream stream = CreditMenu.class.getResource("credit.txt").openStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		StringBuilder builder = new StringBuilder();
 		String string;
-		while ((string = br.readLine()) != null) {
-			JLabel text = new JLabel(string);
-			container.add(text);
+		while((string = reader.readLine()) != null) {
+			builder.append(string);
+			builder.append('\n');
 		}
+		reader.close();
+		string = builder.toString();
 		
-		br.close();
-		
+		JTextArea area = new JTextArea(string);
+		area.setEditable(false);
+		area.setBackground(new Color(238,238,238));
+		frame.add(area);
 		frame.setVisible(true);
 	}
 }
