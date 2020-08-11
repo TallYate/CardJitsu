@@ -21,14 +21,14 @@ public class Game implements ActionListener {
 	public Side player = new Side(26);
 	Side enemy = new Side(26);
 
-	public GameFrame frame = new GameFrame(this, "Card Jitsu");
+	public GameFrame frame;
 	boolean playing = true;
 	public Random random = new Random();
 	
 	EnemyAttackPattern attackPattern = new EnemyAttackPattern();
 	
 	//	0 is achievements, 1 is wins
-	char[] saveData = new char[2]; 
+	public char[] saveData = new char[2]; 
 	
 	public static void main(String[] args) {
 		try {
@@ -40,14 +40,12 @@ public class Game implements ActionListener {
 	}
 	
 	public Game() throws IOException {
+		frame = new GameFrame(this, "Card Jitsu");
 		File file = new File("CardJitsuSaveData.txt");
 		file.createNewFile();
 		FileReader reader = new FileReader(file);
 		reader.read(saveData);
 		reader.close();
-		
-		System.out.println((int) saveData[0]);
-		System.out.println((int) saveData[1]);
 	}
 	
 	public void tryAddAchievement(Achievement achievement) {
@@ -118,8 +116,6 @@ public class Game implements ActionListener {
 		}
 
 		if (win) {
-			
-			addWin();
 			tryAddAchievement(Achievement.WIN_ROUND);
 			
 			enemy.remove(enemyIndex);
@@ -142,6 +138,7 @@ public class Game implements ActionListener {
 		frame.top.eSt.setText(Integer.toString(enemy.size));
 
 		if (enemy.size == 0) {
+			addWin();
 			tryAddAchievement(Achievement.WIN_GAME);
 			
 			frame.top.midText.setText("You Won!");

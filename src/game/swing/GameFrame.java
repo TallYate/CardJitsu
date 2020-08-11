@@ -25,7 +25,7 @@ import game.objects.Card;
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 6289970174692073519L;
 
-	JButton credit = new CreditButton("credit");
+	JButton credit, stats;
 	public TopPanel top = new TopPanel();
 	JPanel panel = new JPanel(new GridBagLayout());
 	JPanel cards = new JPanel(new GridLayout(0, 10, 2, 2));
@@ -68,13 +68,15 @@ public class GameFrame extends JFrame {
 		padding.setPreferredSize(new Dimension(0, 0));
 		panel.add(padding, gbc);
 
-		// bar.setLayout(null);
+		this.credit = new CreditButton("credit");
+		this.stats = new StatsButton("stats", game.saveData);
 		bar.add(credit);
+		bar.add(stats);
 
 		this.setJMenuBar(bar);
 		this.add(panel);
 
-		achievements.setBounds(67, 0, this.getMaximumSize().width, 27);
+		achievements.setBounds(130, 0, this.getMaximumSize().width, 27);
 		this.getLayeredPane().add(achievements, new Integer(10), 100);
 
 		this.loadCards();
