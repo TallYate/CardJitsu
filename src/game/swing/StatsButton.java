@@ -45,12 +45,12 @@ public class StatsButton extends JButton implements ActionListener {
 	public void createFrame(){
 		JFrame frame = new JFrame("Credit");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setSize(400, 360);
+		frame.setSize(650, 680);
 		Container container = frame.getContentPane();
 		container.setLayout(new FlowLayout());
 
 		JLabel wins = new JLabel("Wins: " + (int) saveData[1]);
-		wins.setPreferredSize(new Dimension(200, 100));
+		wins.setPreferredSize(new Dimension(200, 120));
 		wins.setFont(new Font("Arial", Font.BOLD, 32));
 		wins.setHorizontalAlignment(SwingConstants.CENTER);
 		wins.setBorder(BorderFactory.createEtchedBorder());
@@ -78,7 +78,7 @@ public class StatsButton extends JButton implements ActionListener {
 			
 			panel.add(title);
 			panel.add(text);
-			panel.setPreferredSize(new Dimension(200, 100));
+			panel.setPreferredSize(new Dimension(200, 120));
 			
 			if((binary & 1) == 1) {
 				panel.setBackground(Color.GREEN);
