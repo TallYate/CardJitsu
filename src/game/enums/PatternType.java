@@ -6,8 +6,8 @@ public enum PatternType {
 	REPEAT(2),
 	CYCLE_STRONGER(3),
 	CYCLE_WEAKER(3),
-	STRONGEST_CARD(2),
-	WEAKEST_CARD(2);
+	STRONGEST_CARD(1),
+	WEAKEST_CARD(1);
 	
 	static Random random = new Random();
 	int dur;
