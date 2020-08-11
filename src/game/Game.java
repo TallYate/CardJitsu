@@ -3,10 +3,15 @@ package game;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 import game.enums.CardType;
 import game.enums.EffectType;
+import game.objects.Achievement;
 import game.objects.Card;
 import game.objects.Side;
 import game.swing.GameFrame;
@@ -17,14 +22,57 @@ public class Game implements ActionListener {
 	Side enemy = new Side(26);
 
 	public GameFrame frame = new GameFrame(this, "Card Jitsu");
-	
 	boolean playing = true;
 	public Random random = new Random();
 	
 	EnemyAttackPattern attackPattern = new EnemyAttackPattern();
 	
-	public static void main(String[] args) throws InterruptedException {
-		new Game();
+	//	0 is achievements, 1 is wins
+	char[] saveData = new char[2]; 
+	
+	public static void main(String[] args) {
+		try {
+			new Game();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public Game() throws IOException {
+		File file = new File("CardJitsuSaveData.txt");
+		file.createNewFile();
+		FileReader reader = new FileReader(file);
+		reader.read(saveData);
+		reader.close();
+		
+		System.out.println((int) saveData[0]);
+		System.out.println((int) saveData[1]);
+	}
+	
+	public void tryAddAchievement(Achievement achievement) {
+		if((saveData[0] >> achievement.id & 1) == 0) {
+			frame.achievements.buffer.add(achievement);
+			saveData[0] += 1 << achievement.id;
+			saveData();
+		}
+	}
+	
+	public void addWin() {
+		saveData[1]++;
+		saveData();
+	}
+	
+	public void saveData() {
+		try {
+			File file = new File("CardJitsuSaveData.txt");
+			file.createNewFile();
+			FileWriter writer = new FileWriter(file, false);
+			writer.write(saveData);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -52,9 +100,10 @@ public class Game implements ActionListener {
 			break;
 		case NEUTRAL:
 			if(playerCard.power == enemyCard.power) {
+				tryAddAchievement(Achievement.TIE_ROUND);
 				frame.top.midText.setText("=");
 				frame.top.topText.setText("Tie");
-				frame.top.topText.setForeground(new Color(60, 60, 40));
+				frame.top.topText.setForeground(new Color(80, 80, 40));
 				return;
 			}
 			else if (playerCard.power > enemyCard.power) {
@@ -69,11 +118,18 @@ public class Game implements ActionListener {
 		}
 
 		if (win) {
+			
+			addWin();
+			tryAddAchievement(Achievement.WIN_ROUND);
+			
 			enemy.remove(enemyIndex);
 			frame.top.midText.setText(">");
 			frame.top.topText.setText("You Win");
 			frame.top.topText.setForeground(new Color(40, 80, 40));
 		} else {
+			
+			tryAddAchievement(Achievement.LOSE_ROUND);
+			
 			player.remove(playerIndex);
 			frame.top.midText.setText("<");
 			frame.top.topText.setText("You Lose");
@@ -86,12 +142,16 @@ public class Game implements ActionListener {
 		frame.top.eSt.setText(Integer.toString(enemy.size));
 
 		if (enemy.size == 0) {
+			tryAddAchievement(Achievement.WIN_GAME);
+			
 			frame.top.midText.setText("You Won!");
 			frame.top.midText.setForeground(new Color(40, 80, 40));
 			frame.top.topText.setText("");
 			
 			playing = false;
 		} else if (player.size == 0) {
+			tryAddAchievement(Achievement.LOSE_GAME);
+			
 			frame.top.midText.setText("You Lost :(");
 			frame.top.midText.setForeground(new Color(80, 40, 40));
 			frame.top.topText.setText("");

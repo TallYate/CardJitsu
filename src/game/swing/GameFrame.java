@@ -1,6 +1,5 @@
 package game.swing;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -31,10 +30,12 @@ public class GameFrame extends JFrame {
 	JPanel panel = new JPanel(new GridBagLayout());
 	JPanel cards = new JPanel(new GridLayout(0, 10, 2, 2));
 	JMenuBar bar = new JMenuBar();
-	
+
+	public AchievementPanel achievements = new AchievementPanel();
+
 	Game game;
 	GridBagConstraints gbc = new GridBagConstraints();
-	
+
 	JLabel padding = new JLabel();
 
 	public GameFrame(Game game, String title) {
@@ -45,6 +46,7 @@ public class GameFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1200, 600);
 		this.setMinimumSize(new Dimension(1200, 400));
+		this.setMaximumSize(new Dimension(9600, 3200));
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -66,13 +68,17 @@ public class GameFrame extends JFrame {
 		padding.setPreferredSize(new Dimension(0, 0));
 		panel.add(padding, gbc);
 
-		this.setLayout(new BorderLayout());
+		// bar.setLayout(null);
 		bar.add(credit);
-		
-		this.add(bar, BorderLayout.PAGE_START);
+
+		this.setJMenuBar(bar);
 		this.add(panel);
-		
+
+		achievements.setBounds(67, 0, this.getMaximumSize().width, 27);
+		this.getLayeredPane().add(achievements, new Integer(10), 100);
+
 		this.loadCards();
+		this.setVisible(true);
 	}
 
 	public void loadCards() {
@@ -136,16 +142,13 @@ public class GameFrame extends JFrame {
 
 				button.setPreferredSize(new Dimension(100, 60));
 
-				button.setRolloverIcon(
-						new ImageIcon(Game.class.getResource("textures/" + entry.type.toString() + "96.png")));
-
 				button.add(image);
 				button.add(label);
 
 				cards.add(button);
-			}
+				}
 		}
-
+		
 		if (game.player.size % 10 == 0) {
 			padding.setPreferredSize(new Dimension(1, 50));
 			t1.start();
@@ -154,8 +157,7 @@ public class GameFrame extends JFrame {
 			t4.start();
 			t5.start();
 		}
-
-		this.setVisible(true);
+		
 	}
 
 	ActionListener tp1 = new ActionListener() {
@@ -164,7 +166,7 @@ public class GameFrame extends JFrame {
 			cards.revalidate();
 		}
 	};
-	
+
 	ActionListener tp2 = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 			padding.setPreferredSize(new Dimension(1, 30));
