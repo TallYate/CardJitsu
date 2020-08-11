@@ -29,7 +29,7 @@ public class GameFrame extends JFrame {
 	public TopPanel top = new TopPanel();
 	JPanel panel = new JPanel(new GridBagLayout());
 	JPanel cards = new JPanel(new GridLayout(0, 10, 2, 2));
-	JMenuBar bar = new JMenuBar();
+	public JMenuBar bar = new JMenuBar();
 
 	public AchievementPanel achievements = new AchievementPanel();
 

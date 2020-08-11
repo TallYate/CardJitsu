@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
+import javax.swing.JButton;
+
 import game.enums.CardType;
 import game.enums.EffectType;
 import game.objects.Achievement;
@@ -19,9 +21,9 @@ import game.swing.GameFrame;
 public class Game implements ActionListener {
 	
 	public Side player = new Side(26);
-	Side enemy = new Side(26);
+	public Side enemy = new Side(26);
 
-	public GameFrame frame;
+	GameFrame frame;
 	boolean playing = true;
 	public Random random = new Random();
 	
@@ -36,7 +38,6 @@ public class Game implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public Game() throws IOException {
@@ -46,6 +47,9 @@ public class Game implements ActionListener {
 		FileReader reader = new FileReader(file);
 		reader.read(saveData);
 		reader.close();
+		
+		cButton.setActionCommand("continue");
+		cButton.addActionListener(this);
 	}
 	
 	public void tryAddAchievement(Achievement achievement) {
@@ -76,6 +80,14 @@ public class Game implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(!playing) {
+			if(e.getActionCommand().equals("continue")){
+				frame.bar.remove(cButton);
+				playing = true;
+				player = new Side(26);
+				enemy = new Side(26);
+				frame.loadCards();
+				frame.setVisible(true);
+			}
 			return;
 		}
 		
@@ -145,7 +157,7 @@ public class Game implements ActionListener {
 			frame.top.midText.setForeground(new Color(40, 80, 40));
 			frame.top.topText.setText("");
 			
-			playing = false;
+			finishGame();
 		} else if (player.size == 0) {
 			tryAddAchievement(Achievement.LOSE_GAME);
 			
@@ -153,7 +165,14 @@ public class Game implements ActionListener {
 			frame.top.midText.setForeground(new Color(80, 40, 40));
 			frame.top.topText.setText("");
 			
-			playing = false;
+			finishGame();
 		}
+	}
+	
+	JButton cButton = new JButton("Continue");
+	
+	private void finishGame() {
+		playing = false;
+		frame.bar.add(cButton);
 	}
 }
