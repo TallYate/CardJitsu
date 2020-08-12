@@ -6,8 +6,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import game.Game;
 import game.objects.Achievement;
 
 public class AchievementPanel extends JPanel implements ActionListener{
@@ -74,6 +81,16 @@ public class AchievementPanel extends JPanel implements ActionListener{
 			this.g = achievement.g;
 			this.b = achievement.b;
 			c=DURATION;
+			Clip clip;
+			try {
+				clip = AudioSystem.getClip();
+				AudioInputStream stream = AudioSystem.getAudioInputStream(Game.class.getResourceAsStream("cjachievementsound.wav"));
+				clip.open(stream);
+				clip.start();
+			} 
+			catch (LineUnavailableException e) {e.printStackTrace();} 
+			catch (UnsupportedAudioFileException e) {e.printStackTrace();}
+			catch (IOException e) {e.printStackTrace();}
 		}
 		
 		//handle fading

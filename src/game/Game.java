@@ -61,7 +61,35 @@ public class Game implements ActionListener {
 	}
 	
 	public void addWin() {
-		saveData[1]++;
+		switch(++saveData[1]) {
+		case 1:
+			tryAddAchievement(Achievement.BELT_WHITE);
+			break;
+		case 4:
+			tryAddAchievement(Achievement.BELT_YELLOW);
+			break;
+		case 9:
+			tryAddAchievement(Achievement.BELT_ORANGE);
+			break;
+		case 16:
+			tryAddAchievement(Achievement.BELT_GREEN);
+			break;
+		case 25:
+			tryAddAchievement(Achievement.BELT_BLUE);
+			break;
+		case 36:
+			tryAddAchievement(Achievement.BELT_RED);
+			break;
+		case 49:
+			tryAddAchievement(Achievement.BELT_PURPLE);
+			break;
+		case 64:
+			tryAddAchievement(Achievement.BELT_BROWN);
+			break;
+		case 80:
+			tryAddAchievement(Achievement.BELT_BLACK);
+			break;
+		}
 		saveData();
 	}
 	
@@ -150,8 +178,8 @@ public class Game implements ActionListener {
 		frame.top.eSt.setText(Integer.toString(enemy.size));
 
 		if (enemy.size == 0) {
-			addWin();
 			tryAddAchievement(Achievement.WIN_GAME);
+			addWin();
 			
 			frame.top.midText.setText("You Won!");
 			frame.top.midText.setForeground(new Color(40, 80, 40));
