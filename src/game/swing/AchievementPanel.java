@@ -24,32 +24,33 @@ import javax.swing.Timer;
 import game.Game;
 import game.objects.Achievement;
 
-public class AchievementPanel extends JPanel implements ActionListener{
+public class AchievementPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -4193543957474874819L;
-	
+
 	private JLabel title = new JLabel();
 	private JLabel text = new JLabel();
-	
+
 	Timer timer;
 	int c = 0;
 	public LinkedList<Achievement> buffer = new LinkedList<Achievement>();
-	
+
 	int r;
 	int g;
 	int b;
-	
+
 	public AchievementPanel() {
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.add(Box.createRigidArea(new Dimension(5, 0)));
 		this.add(title);
 		this.add(Box.createRigidArea(new Dimension(16, 0)));
 		this.add(text);
-		
+
 		title.setFont(new Font("Arial", Font.BOLD, 25));
-		
+
 		text.setFont(new Font("Arial", Font.PLAIN, 16));
-		text.setAlignmentY(0.42F);;
-		
+		text.setAlignmentY(0.42F);
+		;
+
 		this.setBackground(new Color(0, 0, 0, 0));
 		this.setOpaque(false);
 		this.setBorder(BorderFactory.createEtchedBorder());
@@ -57,22 +58,23 @@ public class AchievementPanel extends JPanel implements ActionListener{
 		timer.setRepeats(true);
 		timer.start();
 	}
-	
+
 	final int DURATION = 128;
-	
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Achievement achievement = buffer.peekFirst();
 		boolean needsPaint = false;
-		//	handle countdown
-		if(c!=0) {
+		// handle countdown
+		if (c != 0) {
 			c--;
 		}
-		//	if c == 0, do nothing if next achievement is null
-		else if(achievement==null) {
+		// if c == 0, do nothing if next achievement is null
+		else if (achievement == null) {
 			return;
 		}
-		//	if c==0 and there is a next achievement, remove first achievement set text to that achievement
+		// if c==0 and there is a next achievement, remove first achievement set text to
+		// that achievement
 		else {
 			buffer.removeFirst();
 			this.title.setText(achievement.title);
@@ -80,40 +82,40 @@ public class AchievementPanel extends JPanel implements ActionListener{
 			this.r = achievement.r;
 			this.g = achievement.g;
 			this.b = achievement.b;
-			c=DURATION;
-			Clip clip;
+			c = DURATION;	
+			
 			try {
-				clip = AudioSystem.getClip();
-				AudioInputStream stream = AudioSystem.getAudioInputStream(Game.class.getResourceAsStream("cjachievementsound.wav"));
+				Clip clip = AudioSystem.getClip();
+				AudioInputStream stream = AudioSystem.getAudioInputStream(Game.class.getResource("cjachievementsound.wav"));
 				clip.open(stream);
 				clip.start();
-			} 
-			catch (LineUnavailableException e) {e.printStackTrace();} 
-			catch (UnsupportedAudioFileException e) {e.printStackTrace();}
-			catch (IOException e) {e.printStackTrace();}
+			} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+				e.printStackTrace();
+			}
+			
 		}
-		
-		//handle fading
-		
-		if(c>0 && c<12) {
+
+		// handle fading
+
+		if (c > 0 && c < 12) {
 			needsPaint = true;
 		}
-		
+
 		int opacity = 255;
-		switch(c) {
+		switch (c) {
 		case DURATION:
 			needsPaint = true;
 			opacity = 64;
 			break;
-		case DURATION-1:
+		case DURATION - 1:
 			needsPaint = true;
 			opacity = 128;
 			break;
-		case DURATION-2:
+		case DURATION - 2:
 			needsPaint = true;
 			opacity = 192;
 			break;
-		case DURATION-3:
+		case DURATION - 3:
 			needsPaint = true;
 			break;
 		case 11:
@@ -150,8 +152,8 @@ public class AchievementPanel extends JPanel implements ActionListener{
 			opacity = 0;
 			break;
 		}
-		
-		if(needsPaint) {
+
+		if (needsPaint) {
 			this.setBackground(new Color(r, g, b, opacity));
 			title.setForeground(new Color(0, 0, 0, opacity));
 			text.setForeground(new Color(0, 0, 0, opacity));

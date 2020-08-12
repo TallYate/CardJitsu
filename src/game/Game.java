@@ -110,6 +110,7 @@ public class Game implements ActionListener {
 		if(!playing) {
 			if(e.getActionCommand().equals("continue")){
 				frame.bar.remove(cButton);
+				frame.bar.repaint();
 				playing = true;
 				player = new Side(26);
 				enemy = new Side(26);
